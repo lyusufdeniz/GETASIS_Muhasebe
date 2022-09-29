@@ -132,8 +132,12 @@ namespace GETASIS_Muhasebe.MVC.Controllers
         {
             Odeme o = Odeme.GetT(id);
             loadList();
-            ViewBag.Alacak = (Double?)Double.Parse(o.Alacak.ToString());
-            ViewBag.Borc = (Double?)Double.Parse(o.Borc.ToString());
+            double alacak = 0.00;
+            double borc = 0.00;
+            Double.TryParse(o.Alacak.ToString(), out alacak);
+            Double.TryParse(o.Borc.ToString(), out borc);
+            ViewBag.Alacak = alacak;
+            ViewBag.Borc = borc;
             return View(o);
         }
         [HttpPost]
