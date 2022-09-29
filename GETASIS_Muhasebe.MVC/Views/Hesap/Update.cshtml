@@ -1,0 +1,154 @@
+﻿@model Hesap
+@if (ViewBag.Error == true)
+{
+	<div asp-validation-summary="All" class="alert alert-danger" role="alert"></div>
+}
+else if (ViewBag.Error == false)
+{
+	<script>
+		 Swal.fire(
+		  'Başarılı!',
+		  'Kayıt Düzenlendi',
+		  'success'
+		)
+	</script>
+}
+<div class="col-xxl">
+	<div class="card mb-4">
+		<div class="card-header d-flex align-items-center justify-content-between">
+			<h5 class="mb-0">Yeni Kayıt</h5>
+	
+		</div>
+		<div class="card-body">
+			<form asp-action="Update" asp-controller="Hesap" method="post">
+				<div class="row mb-3">
+					<label class="col-sm-2 col-form-label" for="basic-icon-default-fullname">Döviz Türü</label>
+					<div class="col-sm-10">
+						<div class="input-group input-group-merge">
+							<span id="basic-icon-default-fullname2" class="input-group-text">
+								<i class="bi bi-coin"></i>
+							</span>
+							<select name="DovizId" class="form-select" id="exampleFormControlSelect1" asp-for=DovizId asp-items=ViewBag.Doviz>
+							</select>
+						</div>
+					</div>
+				</div>
+
+				<div class="row mb-3">
+					<label class="col-sm-2 col-form-label" for="basic-icon-default-fullname">Hesap Adı</label>
+					<div class="col-sm-10">
+						<div class="input-group input-group-merge">
+							<span id="basic-icon-default-fullname2" class="input-group-text">
+								<i class="bi bi-hash"></i>
+							</span>
+							<input type="text"
+								   class="form-control"
+								   id="Ad"
+								   placeholder="Hesap Adı Giriniz"
+								   aria-describedby="basic-icon-default-fullname2"
+								   name="Ad"
+								   asp-for="Ad" />
+						</div>
+					</div>
+				</div>
+				<div class="row mb-3">
+					<label class="col-sm-2 col-form-label" for="basic-icon-default-fullname">Açılış Bakiyesi</label>
+					<div class="col-sm-10">
+						<div class="input-group input-group-merge">
+							<span id="basic-icon-default-fullname2" class="input-group-text">
+								<i class="bi bi-safe-fill"></i>
+							</span>
+							<input type="text"
+								   class="form-control"
+								   id="AcilisBakiye"
+								   name="AcilisBakiye"
+								   placeholder="Acilis Bakiye Tutar Giriniz"
+								   aria-label="John Doe"
+								   aria-describedby="basic-icon-default-fullname2"
+								   asp-for="AcilisBakiye" />
+						</div>
+					</div>
+				</div>
+				<div class="row mb-3">
+					<label class="col-sm-2 col-form-label" for="basic-icon-default-fullname">Banka Adı</label>
+					<div class="col-sm-10">
+						<div class="input-group input-group-merge">
+							<span id="basic-icon-default-message2" class="input-group-text">
+								<i class="bi bi-fonts"></i>
+							</span>
+							<input type="text"
+								   class="form-control"
+								   id="BankaAdi"
+								   placeholder="Banka Adı Giriniz"
+								   name="BankaAdi"
+								   aria-describedby="basic-icon-default-fullname2"
+								   asp-for="BankaAdi" />
+
+						</div>
+					</div>
+				</div>
+				<div class="row mb-3">
+					<label class="col-sm-2 col-form-label" for="basic-icon-default-fullname">Şube</label>
+					<div class="col-sm-10">
+						<div class="input-group input-group-merge">
+							<span id="basic-icon-default-message2" class="input-group-text">
+								<i class="bi bi-bank"></i>
+							</span>
+							<input type="text"
+								   class="form-control"
+								   id="Sube"
+								   placeholder="Şube Giriniz"
+								   name="Sube"
+								   aria-describedby="basic-icon-default-fullname2"
+								   asp-for="Sube" />
+
+						</div>
+					</div>
+				</div>
+				<div class="row mb-3">
+					<label class="col-sm-2 col-form-label" for="basic-icon-default-fullname">Hesap No</label>
+					<div class="col-sm-10">
+						<div class="input-group input-group-merge">
+							<span id="basic-icon-default-fullname2" class="input-group-text">
+								<i class="bi bi-123"></i>
+							</span>
+							<input type="text"
+								   class="form-control"
+								   id="No"
+								   name="No"
+								   placeholder="Hesap No Giriniz"
+								   aria-describedby="basic-icon-default-fullname2"
+								   asp-for="No" />
+
+						</div>
+					</div>
+				</div>
+				<div class="row mb-3">
+					<label class="col-sm-2 col-form-label" for="basic-icon-default-fullname">IBAN</label>
+					<div class="col-sm-10">
+						<div class="input-group input-group-merge">
+							<span id="basic-icon-default-fullname2" class="input-group-text">
+								<i class="bi bi-123"></i>
+							</span>
+							<input type="text"
+								   class="form-control"
+								   id="IBAN"
+								   name="IBAN"
+								   placeholder="IBAN Giriniz"
+								   aria-describedby="basic-icon-default-fullname2"
+								   asp-for="IBAN" />
+						</div>
+					</div>
+				</div>
+
+				<div class="row justify-content-end">
+					<div class="col-sm-10">
+						<button type="submit" class="btn btn-primary">Güncelle</button>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+
+

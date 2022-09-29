@@ -1,0 +1,118 @@
+﻿@model List<Cari>
+
+
+@if (TempData["DeleteError"] != null && TempData["DeleteError"].ToString() == "1")
+{
+	<script>
+		Swal.fire(
+			'Hata!',
+			'Kayıt Silinemedi İlişkili Kayıtlar Mevcut!!',
+			'danger'
+		)
+	</script>
+}
+else if (TempData["DeleteError"] != null && TempData["DeleteError"].ToString() == "0")
+{
+	<script>
+		Swal.fire(
+			'OK!',
+			'Kayıt Silindi',
+			'Succes'
+		)
+	</script>
+}
+
+<div class="card">
+
+	<h5 class="card-header">
+		Cari Listesi &nbsp;&nbsp;
+		<a asp-action="Add" type="button" class="btn btn-warning">Yeni Kayıt</a>
+	</h5>
+
+</div>
+<br />
+
+<div class="card">
+	<br />
+	<div class="table-responsive text-nowrap">
+
+		<br />
+
+		<table id="caritable" class="table " style="width:100%">
+			<thead>
+				<tr>
+					<th>Ad</th>
+					<th>Ad Soyad</th>
+					<th>Mail</th>
+					<th>Vergi Dairesi</th>
+					<th>Vergi No</th>
+					<td>Adres</td>
+					<th>Aksiyon</th>
+				</tr>
+			</thead>
+			<tbody>
+				@{
+					foreach (var cari in Model)
+					{
+						<tr>
+							<td><i class="fab fa-angular fa-lg text-danger me-3"></i> <strong><a asp-action="Update" asp-route-id="@cari.Id"> @cari.Ad</a></strong></td>
+
+							<td>@cari.AdSoyad</td>
+							<td>@cari.Mail</td>
+							<td>@cari.VergiDairesi</td>
+							<td>@cari.VergiNo</td>
+							<td>@cari.Adres</td>
+							<td>
+								<form id="deleteform" asp-action="Delete" asp-route-id="@cari.Id" method="post">
+									<button class="submit btn btn-danger" type="submit"
+										data-confirm="Kaydı Silmek İstediğinizden Emin Misiniz?"
+										data-icon="warning"
+										data-color="#e55353">
+										Sil
+									</button>
+								</form>
+
+
+
+							</td>
+						</tr>
+
+					}
+				}
+			</tbody>
+		</table>
+	</div>
+</div>
+
+
+
+<script>
+	$(document).ready(function () {
+		$('#caritable').DataTable();
+	});
+
+</script>
+
+<script type="text/javascript">
+
+
+	document.querySelectorAll('.submit').forEach(item => {
+		item.addEventListener('click', function (event) {
+			event.preventDefault();
+			let form = this.closest('form');
+			Swal.fire({
+				icon: this.getAttribute('data-icon'),
+				text: this.getAttribute('data-confirm'),
+				showCancelButton: true,
+				confirmButtonText: 'Evet',
+				cancelButtonText: 'Hayır',
+				iconColor: this.getAttribute('data-color'),
+				confirmButtonColor: this.getAttribute('data-color'),
+			}).then((result) => {
+				if (result.isConfirmed) {
+					form.submit();
+				}
+			})
+		})
+	});
+</script>

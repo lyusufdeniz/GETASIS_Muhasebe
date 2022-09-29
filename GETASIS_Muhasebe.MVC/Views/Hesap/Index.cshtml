@@ -1,0 +1,135 @@
+﻿@model HesapViewModel
+
+@if (TempData["DeleteError"] != null && TempData["DeleteError"].ToString() == "1")
+{
+	<script>
+		Swal.fire(
+			'Hata!',
+			'Kayıt Silinemedi İlişkili Kayıtlar Mevcut!!',
+			'danger'
+		)
+	</script>
+}
+else if (TempData["DeleteError"] != null && TempData["DeleteError"].ToString() == "0")
+{
+	<script>
+		Swal.fire(
+			'OK!',
+			'Kayıt Silindi',
+			'Succes'
+		)
+	</script>
+}
+
+
+<div class="card text-right">
+	<h5 class="card-header">Hesap Listesi &nbsp;&nbsp; <a asp-action="Add" type="button" class="btn btn-warning">Yeni Kayıt</a> </h5>
+
+</div>
+<br />
+
+<div class="card">
+	<div class="card-body">
+		<div class="demo-inline-spacing">
+			<div class="btn-group">
+				<form asp-action="Index" asp-controller="Hesap" class="form-inline" method="post">
+					<div class="form-row align-items-center">
+						<div class="row">
+
+							<div class="col">
+								<label for="Tip">Döviz Cinsi</label>
+								<select name="DovizId" class="form-select" id="DovizId" asp-for=@Model.HesapFilter.DovizId asp-items=ViewBag.Doviz>
+									<option>-</option>
+								</select>
+							</div>
+
+							<div class="col">
+								<br />
+								<button id="sub" type="submit" class="btn btn-outline-success">Uygula</button>
+							</div>
+
+
+						</div>
+					</div>
+
+
+
+				</form>
+			</div>
+		</div>
+	</div>
+	<br />
+	<div class="table-responsive text-nowrap">
+		<table class="table" style="width:100%" id="hesaptable">
+			<thead>
+				<tr>
+					<th>Ad</th>
+					<th>Banka Adı</th>
+					<th>Döviz Cinsi</th>
+					<th>Açılış Bakiye</th>
+					<th>Şube</th>
+					<td>Hesap No</td>
+					<th>IBAN</th>
+					<th>Aksiyon</th>
+				</tr>
+			</thead>
+			<tbody>
+				@{
+					foreach (var Hesap in Model.Hesap)
+					{
+
+						<tr>
+							<td><i class="fab fa-angular fa-lg text-danger me-3"></i> <strong><a asp-action="Update" asp-route-id="@Hesap.Id">@Hesap.Ad</a></strong></td>
+							<td>@Hesap.BankaAdi</td>
+							<td>@Hesap.Doviz.Ad</td>
+							<td>@Hesap.AcilisBakiye@Hesap.Doviz.Kisa</td>
+							<td>@Hesap.Sube</td>
+							<td>@Hesap.No</td>
+							<td>@Hesap.IBAN</td>
+							<td>
+								<form id="deleteform" asp-action="Delete" asp-route-id="@Hesap.Id" method="post">
+									<button class="submit btn btn-danger" type="submit"
+										data-confirm="Kaydı Silmek İstediğinizden Emin Misiniz?"
+										data-icon="warning"
+										data-color="#e55353">
+										Sil
+									</button>
+								</form>
+							</td>
+						</tr>
+					}
+				}
+
+			</tbody>
+		</table>
+	</div>
+</div>
+
+<script>
+	$(document).ready(function () {
+		$('#hesaptable').DataTable();
+	});
+</script>
+<script type="text/javascript">
+
+
+	document.querySelectorAll('.submit').forEach(item => {
+		item.addEventListener('click', function (event) {
+			event.preventDefault();
+			let form = this.closest('form');
+			Swal.fire({
+				icon: this.getAttribute('data-icon'),
+				text: this.getAttribute('data-confirm'),
+				showCancelButton: true,
+				confirmButtonText: 'Evet',
+				cancelButtonText: 'Hayır',
+				iconColor: this.getAttribute('data-color'),
+				confirmButtonColor: this.getAttribute('data-color'),
+			}).then((result) => {
+				if (result.isConfirmed) {
+					form.submit();
+				}
+			})
+		})
+	});
+</script>

@@ -1,0 +1,174 @@
+﻿@model OdemeViewModel
+
+
+<div class="card">
+	<h5 class="card-header">Ödeme Listesi &nbsp;&nbsp;<a asp-action="Add" type="button" class="btn btn-warning">Yeni Kayıt</a></h5>
+
+</div>
+<br />
+<div class="card">
+	<div class="card-body">
+		<div class="demo-inline-spacing">
+			<div class="btn-group">
+				<form asp-action="Index" asp-controller="Odeme" class="form-inline" method="post">
+					<div class="form-row align-items-center">
+						<div class="row">
+							<div class="col">
+								<label for="Tarih">Başlangıç </label>
+								<input type="date"
+									   class="form-control"
+									   id="StartDate"
+									   name="StartDate"
+									   aria-describedby="basic-icon-default-fullname2"
+									   value="@ViewBag.StartDate"
+									 
+									   />
+
+							</div>
+							<div class="col">
+								<label for="Tarih">Bitiş </label>
+								<input type="date"
+									   placeholder="Tarih Bitiş"
+									   class="form-control"
+									   id="EndDate"
+									   name="EndDate"
+									   value="@ViewBag.EndDate"  />
+							</div>
+							<div class="col">
+								<label for="Tip">Ödeme Türü</label>
+								<select name="OdemeTipId" class="form-select" id="OdemeTipId" asp-for=@Model.OdemeFilter.OdemeTipId asp-items=ViewBag.Tur>
+
+									<option>-</option>
+								</select>
+							</div>
+							<div class="col">
+								<label for="HesapId">Hesap</label>
+								<select name="HesapId" class="form-select" id="HesapId" asp-for=@Model.OdemeFilter.HesapId asp-items=ViewBag.Hesap>
+									<option>-</option>
+								</select>
+							</div>
+							<div class="col">
+								<br />
+								<button id="sub" type="submit" class="btn btn-outline-success">Uygula</button>
+							</div>
+
+							</div>
+					</div>
+
+
+				</form>
+			</div>
+		</div>
+	</div>
+	<br />
+
+	<div class="table-responsive text-nowrap table-responsive p-0">
+		<table class="table" style="width:100%" id="odemetable">
+			<thead>
+				<tr>
+					<th>Cari</th>
+					<th>Hesap</th>
+					<th>Tip</th>
+					<th>Alacak</th>
+					<th>Borç</th>
+					<td>Tarih</td>
+					<td>Belge No</td>
+					<td>Vade Tarihi</td>
+					<td>Açıklama</td>
+					<th>Aksiyon</th>
+				</tr>
+			</thead>
+			<tbody>
+				@{
+					if (Model != null)
+					{
+						foreach (var odeme in Model.Odeme)
+						{
+
+
+
+							<tr>
+								<td><i class="fab fa-angular fa-lg text-danger me-3"></i> <strong><a asp-action="Update" asp-route-id="@odeme.Id">@odeme.Cari.Ad</a></strong></td>
+								<td>@odeme.Hesap.Ad</td>
+								<td>@odeme.OdemeTip.Ad</td>
+								<td>@odeme.Alacak@odeme.Hesap.Doviz.Kisa</td>
+								<td>@odeme.Borc@odeme.Hesap.Doviz.Kisa</td>
+								<td>
+									@{
+										DateTime tarih;
+										DateTime.TryParse(odeme.Tarih.ToString(), out tarih);
+										@tarih.ToString("dd/MM/yyyy")
+									}
+								</td>
+								<td>@odeme.BelgeNo</td>
+								<td>
+									@if (odeme.VadeTarihi != null)
+									{
+
+										DateTime vadetarihi;
+										DateTime.TryParse(odeme.VadeTarihi.ToString(), out vadetarihi);
+										@vadetarihi.ToString("dd/MM/yyyy")
+									}
+
+
+								</td>
+								<td>@odeme.Aciklama</td>
+
+								<td>
+									<form id="deleteform" asp-action="Delete" asp-route-id="@odeme.Id" method="post">
+										<button class="submit btn btn-danger" type="submit"
+										data-confirm="Kaydı Silmek İstediğinizden Emin Misiniz?"
+										data-icon="warning"
+										data-color="#e55353">
+											Sil
+										</button>
+									</form>
+								</td>
+							</tr>
+						}
+
+
+					}
+				}
+
+			</tbody>
+		</table>
+	</div>
+</div>
+
+
+
+
+
+<script>
+	$(document).ready(function () {
+		$('#odemetable').DataTable();
+
+	});
+
+</script>
+
+
+<script type="text/javascript">
+
+
+	document.querySelectorAll('.submit').forEach(item => {
+		item.addEventListener('click', function (event) {
+			event.preventDefault();
+			let form = this.closest('form');
+			Swal.fire({
+				icon: this.getAttribute('data-icon'),
+				text: this.getAttribute('data-confirm'),
+				showCancelButton: true,
+				confirmButtonText: 'Evet',
+				cancelButtonText: 'Hayır',
+				iconColor: this.getAttribute('data-color'),
+				confirmButtonColor: this.getAttribute('data-color'),
+			}).then((result) => {
+				if (result.isConfirmed) {
+					form.submit();
+				}
+			})
+		})
+	});
+</script>

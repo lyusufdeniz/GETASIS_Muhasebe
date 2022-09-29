@@ -1,0 +1,93 @@
+﻿@model RaporViewModel
+
+<div class="card text-right">
+
+	<div class="row">
+	
+			<div class="col-md-10"clas>
+			<h5 class="card-header mt-2">
+					
+				Aylık Rapor @ViewBag.Month / @DateTime.Now.Year
+			</h5>
+			</div>
+
+			<div class="col-md-2">
+				<h5 class="card-header">
+
+				
+					<a href="/Default/AylikRapor/@ViewBag.MonthId" class="btn btn-outline-success"> <i class="bi bi-file-earmark-excel"></i>İndir</a>
+
+				
+				</h5>
+
+			</div>
+	
+	</div>
+</div>
+
+<br />
+<div class="card">
+	<br />
+	<div class="col-sm-12 col-md-2 col-lg-2 col-xl-2">
+		<form method="post">
+			<div class="input-group">
+				<select name="MonthId" class="form-select" id="MonthId" asp-for=ay asp-items=ViewBag.Aylar>
+				</select>
+				<button type="submit" class="btn btn-outline-info"> <i class="bi bi-zoom-in"></i></button>
+
+			</div>
+
+		</form>
+	</div>
+
+	<br />
+	<div class="table-responsive text-nowrap">
+
+
+
+
+		<table id="rapor" class="table " style="width:100%">
+			<thead>
+				<tr>
+					<th>Cari Ad</th>
+					<th>Ad Soyad</th>
+					<th>Alacak</th>
+					<th>Borç</th>
+					<th>Toplam</th>
+				</tr>
+			</thead>
+			<tbody>
+
+				@{
+
+					foreach (var item in Model.Cari)
+					{
+						var alacaktoplam = Model.Odeme.Where(p => p.CariId == item.Id).Sum(p => p.Alacak);
+						var borctoplam = Model.Odeme.Where(p => p.CariId == item.Id).Sum(p => p.Borc);
+				
+						<tr>
+							<td>@item.Ad</td>
+							<td>@item.AdSoyad</td>
+							<td>@alacaktoplam₺ </td>
+							<td>@borctoplam₺ </td>
+							<td>@(alacaktoplam - borctoplam)₺ </td>
+						</tr>
+					}
+
+
+				}
+
+			</tbody>
+			<tfoot>
+			<tr>
+						<td>GENEL TOPLAM </td>
+					<td></td>
+					<td>@ViewBag.TotalAlacak₺</td>
+					<td>@ViewBag.TotalBorc₺</td>
+					<td>@ViewBag.Total₺</td>
+			</tr>
+
+			</tfoot>
+		</table>
+	</div>
+</div>

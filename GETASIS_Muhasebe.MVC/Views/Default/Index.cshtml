@@ -1,0 +1,115 @@
+﻿@model DashViewModel
+
+<script src="~/chart.js/chart.min.js"></script>
+<script src="~/js/graph.js"></script>
+<script src="https://code.jquery.com/jquery-latest.js"></script>
+<div class="row">
+	<div class=" col-sm-12 col-md-12 col-lg-12 col-xl-12 mt-2 " >
+		<div class="card">
+			<h5 class="card-header col-sm-12 col-md-4 col-lg-4 col-xl-4 ">
+				
+					Gelir/Gider Grafiği
+				<select  name="MonthId" class="form-select" id="MonthId"asp-for="year" asp-items="ViewBag.Yillar ">
+					</select>
+
+			</h5>
+			<div class="card-body ">
+
+				<canvas id="bar-chart" style="max-height:300px"></canvas>
+						
+					
+					
+		
+			</div>
+		</div>
+
+	</div>
+@*	<div class="col-12 col-sm-12 col-md-4 col-lg-4 col-xl-4 mt-2">
+		<div class="card mt-2">
+			<h5 class="card-header">
+				Grafik 2
+			</h5>
+			<div class="card-body"><canvas id="bar-chart"></canvas></div>
+		</div>
+	</div>*@
+
+</div>
+<div class="row">
+	<div class=" col-sm-12 col-md-4 col-lg-4 col-xl-4 mt-2 ">
+
+		<div class="card mt-2">
+			<h5 class="card-header">
+				Hesaplar
+			</h5>
+			<div class="card-body table-responsive">
+				
+					<table class="table table-nowrap">
+						<thead>
+							<tr>
+								<td>Hesap</td>
+								<td>Banka</td>
+								<td>Döviz</td>
+							</tr>
+
+						</thead>
+						<tbody>
+							@foreach (var items in Model.Hesap)
+							{
+								<tr>
+
+									<td><a asp-action="Update" asp-controller="Hesap" asp-route-id="@items.Id">@items.Ad</a></td>
+									<td>
+										@items.BankaAdi
+									</td>
+									<td>@items.Doviz.Ad</td>
+								</tr>
+
+							}
+						</tbody>
+					</table>
+				
+			</div>
+		</div>
+	</div>
+	<div class="col-12 col-sm-12 col-md-8 col-lg-8 col-xl-8 mt-2">
+		<div class="card mt-2">
+			<h5 class="card-header">
+				Son 5 Ödeme
+			</h5>
+			<div class="card-body table-responsive">
+			
+					<table class="table">
+						<thead>
+							<tr>
+								<td>Cari</td>
+								<td>Açıklamas</td>
+								<td>Tarih</td>
+							</tr>
+
+						</thead>
+						<tbody>
+							@foreach (var items in Model.Odeme)
+							{
+								<tr>
+
+									<td><a asp-action="Update" asp-controller="Odeme" asp-route-id="@items.Id">@items.Cari.Ad</a></td>
+									<td>
+										@items.Aciklama
+									</td>
+									<td>@items.Tarih.Value.ToString("dd/MM/yyyy")</td>
+								</tr>
+
+							}
+						</tbody>
+					</table>
+				
+			</div>
+		</div>
+	</div>
+
+</div>
+
+
+
+
+
